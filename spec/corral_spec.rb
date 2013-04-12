@@ -105,7 +105,6 @@ describe Corral do
           end
         end
       end
-
     end
 
     context "when the given feature does not exist" do

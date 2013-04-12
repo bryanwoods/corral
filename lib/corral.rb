@@ -2,7 +2,7 @@ require "corral/version"
 
 module Corral
   class Feature
-    attr_accessor :feature, :condition, :disabled
+    attr_reader :condition
 
     def initialize(feature, condition, disabled)
       @feature = feature
