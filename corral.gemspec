@@ -6,11 +6,10 @@ require 'corral/version'
 Gem::Specification.new do |spec|
   spec.name          = "corral"
   spec.version       = Corral::VERSION
-  spec.authors       = ["Bryan Woods & Daniel Lacy"]
-  spec.email         = ["pair+bryan+daniel@howaboutwe.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.authors       = ["Bryan Woods"]
+  spec.email         = ["bryanwoods4e@gmail.com"]
+  spec.summary       = "Use Corral to hide certain features in your application."
+  spec.homepage      = "http://github.com/bryanwoods/corral"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
