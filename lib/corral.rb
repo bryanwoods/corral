@@ -39,7 +39,7 @@ module Corral
     end
   end
 
-  def hide(feature, options = {})
+  def disable(feature, options = {})
     condition = options[:when] || options[:if]
 
     if condition && !condition.respond_to?(:call)

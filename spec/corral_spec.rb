@@ -14,8 +14,8 @@ describe Corral do
           context "when the conditions are true" do
             before do
               corral do
-                hide :everything_free, when: -> { true }
-                hide :torpedoes, if: -> { true }
+                disable :everything_free, when: -> { true }
+                disable :torpedoes, if: -> { true }
               end
             end
 
@@ -28,8 +28,8 @@ describe Corral do
           context "when the conditions are not true" do
             before do
               corral do
-                hide :payment_button, when: -> { 1 > 2 }
-                hide :sunshine, if: -> { true == false }
+                disable :payment_button, when: -> { 1 > 2 }
+                disable :sunshine, if: -> { true == false }
               end
             end
 
@@ -44,7 +44,7 @@ describe Corral do
           it "raises an exception" do
             expect do
               corral do
-                hide :the_sandwich, if: 1.odd?
+                disable :the_sandwich, if: 1.odd?
               end
             end.to raise_error(RuntimeError)
           end
@@ -71,7 +71,7 @@ describe Corral do
       context "when the feature has no 'when' condition" do
         before do
           corral do
-            hide :torpedoes
+            disable :torpedoes
           end
         end
 
@@ -84,7 +84,7 @@ describe Corral do
         context "when the 'when' condition is true" do
           before do
             corral do
-              hide :torpedoes, when: -> { true }
+              disable :torpedoes, when: -> { true }
             end
           end
 
@@ -96,7 +96,7 @@ describe Corral do
         context "when the 'when' condition is false" do
           before do
             corral do
-              hide :cupcakes, when: -> { false }
+              disable :cupcakes, when: -> { false }
             end
           end
 
@@ -117,7 +117,7 @@ describe Corral do
       context "when the result is true" do
         before do
           corral do
-            hide :cupcakes, if: ->(person) { person == "Bryan" }
+            disable :cupcakes, if: ->(person) { person == "Bryan" }
           end
         end
 
@@ -129,7 +129,7 @@ describe Corral do
       context "when the result is not true" do
         before do
           corral do
-            hide :cupcakes, if: ->(person) { person == "Bryan" }
+            disable :cupcakes, if: ->(person) { person == "Bryan" }
           end
         end
 
@@ -145,7 +145,7 @@ describe Corral do
       context "when the feature has no 'when' condition" do
         before do
           corral do
-            hide :torpedoes
+            disable :torpedoes
           end
         end
 
@@ -158,7 +158,7 @@ describe Corral do
         context "when the 'when' condition is true" do
           before do
             corral do
-              hide :torpedoes, when: -> { true }
+              disable :torpedoes, when: -> { true }
             end
           end
 
@@ -170,7 +170,7 @@ describe Corral do
         context "when the 'when' condition is false" do
           before do
             corral do
-              hide :cupcakes, when: -> { false }
+              disable :cupcakes, when: -> { false }
             end
           end
 
@@ -192,7 +192,7 @@ describe Corral do
     context "when the result is true" do
       before do
         corral do
-          hide :cupcakes, if: ->(person) { person == "Bryan" }
+          disable :cupcakes, if: ->(person) { person == "Bryan" }
         end
       end
 
@@ -204,7 +204,7 @@ describe Corral do
     context "when the result is not true" do
       before do
         corral do
-          hide :cupcakes, if: ->(person) { person == "Bryan" }
+          disable :cupcakes, if: ->(person) { person == "Bryan" }
         end
       end
 

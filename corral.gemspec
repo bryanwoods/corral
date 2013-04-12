@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Corral::VERSION
   spec.authors       = ["Bryan Woods"]
   spec.email         = ["bryanwoods4e@gmail.com"]
-  spec.summary       = "Use Corral to hide certain features in your application."
+  spec.summary       = "Use Corral to disable certain features in your application."
   spec.homepage      = "http://github.com/bryanwoods/corral"
   spec.license       = "MIT"
 

@@ -2,7 +2,7 @@
 
 ![Corral](http://cl.ly/image/0Q1E2Z451v2a/corral.jpg)
 
-Use Corral to hide certain features in your application.
+Use Corral to disable certain features in your application.
 
 ### Is it any good?
 
@@ -23,9 +23,9 @@ Put this somewhere like: `config/initializers/corral.rb`
 include Corral
 
 corral do
-  hide :torpedoes, when: -> { true }
-  hide :fun_and_games, when: -> { Rails.env.production? }
-  hide :cupcakes, if: ->(person) { person == "Bryan" }
+  disable :torpedoes, when: -> { true }
+  disable :fun_and_games, when: -> { Rails.env.production? }
+  disable :cupcakes, if: ->(person) { person == "Bryan" }
 end
 ```
 
