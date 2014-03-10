@@ -22,21 +22,38 @@ Put this somewhere like: `config/initializers/corral.rb`
 ```ruby
 include Corral
 
-corral do
+# Pass an environment to use the `in` option...
+Corral.corral(Rails.env) do
   disable :torpedoes, when: -> { true }
-  disable :fun_and_games, when: -> { Rails.env.production? }
+  disable :fun_and_games, in: [:staging, :production]
   disable :cupcakes, if: ->(person) { person == "Bryan" }
 end
 ```
 
 ("when" and "if" mean the same thing. Use whichever makes you happy.)
 
+If you don't mind polluting your global namespace and want to more
+easily refer to these methods, you can include `Corral::Helpers`
+
+```ruby
+include Corral::Helpers
+
+corral(Rails.env) do
+  disable :caching, in: [:development, :test, :staging]
+  disable :crying, when: ->(user) { user.birthday == Date.today }
+end
+```
 
 ## Usage
 
 ```ruby
+# If you've included Corral::Helpers
 fire! if enabled?(:torpedoes)
 sulk if disabled?(:cupcakes, "Bryan") # And I don't even *like* sweets!
+
+# If you've only included Corral
+fire! if Corral.enabled?(:torpedoes)
+sulk if Corral.disabled?(:cupcakes, "Bryan")
 ```
 
 ## Installation

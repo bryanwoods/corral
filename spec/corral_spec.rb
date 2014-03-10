@@ -10,6 +10,34 @@ describe Corral do
       end
 
       context "when given known features" do
+        context "when passed an environment in an 'in' option" do
+          context "when the environment matches the condition" do
+            before do
+              corral("development") do
+                disable :caching, in: :development
+                disable "expiry_headers", in: :development
+              end
+            end
+
+            it "disables the feature" do
+              disabled?(:caching).should be_true
+              disabled?(:expiry_headers).should be_true
+            end
+          end
+
+          context "when the environment does not match any of the conditions" do
+            before do
+              corral("development") do
+                disable :debug_mode, in: [:production, :test]
+              end
+            end
+
+            it "does not disable the feature" do
+              disabled?(:debug_mode).should be_false
+            end
+          end
+        end
+
         context "when given callable 'when' or 'if' options" do
           context "when the conditions are true" do
             before do
