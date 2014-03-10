@@ -29,19 +29,15 @@ module Corral
     Feature.push(feature, condition)
   end
 
-  def self.disabled?(feature, argument = nil)
-    !self.enabled?(feature, argument)
+  def self.disabled?(feature, *arguments)
+    !self.enabled?(feature, *arguments)
   end
 
-  def self.enabled?(feature, argument = nil)
-    feature = Feature.get(feature)
-    return false unless feature && (condition = feature.condition)
+  def self.enabled?(feature, *arguments)
+    (feature = Feature.get(feature)) && (condition = feature.condition) or
+      return false
 
-    if argument
-      !condition.call(argument)
-    else
-      !condition.call
-    end
+    !condition.call(*arguments)
   end
 
   private
@@ -51,10 +47,8 @@ module Corral
   end
 
   def self.environment_override(feature, *environments)
-    condition = -> do
-      environments.any? { |env| env.to_sym == self.environment }
-    end
-
+    envs = environments.map(&:to_sym)
+    condition = -> { envs.any? { |env| env == self.environment } }
     Feature.push(feature, condition)
   end
 end
