@@ -24,9 +24,9 @@ include Corral
 
 # Pass an environment to use the `in` option...
 Corral.corral(Rails.env) do
-  Corral.disable :torpedoes, when: -> { true }
-  Corral.disable :fun_and_games, in: [:staging, :production]
-  Corral.disable :cupcakes, if: ->(person) { person == "Bryan" }
+  disable :torpedoes, when: -> { true }
+  disable :fun_and_games, in: [:staging, :production]
+  disable :cupcakes, if: ->(person) { person == "Bryan" }
 end
 ```
 
@@ -47,8 +47,13 @@ end
 ## Usage
 
 ```ruby
+# If you've included Corral::Helpers
 fire! if enabled?(:torpedoes)
 sulk if disabled?(:cupcakes, "Bryan") # And I don't even *like* sweets!
+
+# If you've only included Corral
+fire! if Corral.enabled?(:torpedoes)
+sulk if Corral.disabled?(:cupcakes, "Bryan")
 ```
 
 ## Installation
