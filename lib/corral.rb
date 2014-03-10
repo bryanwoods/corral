@@ -31,11 +31,7 @@ module Corral
 
     def corral(env = nil, &block)
       Helpers.environment = env.to_s
-      features(&block)
-    end
-
-    def features(&block)
-      instance_eval(&block)
+      gather_features(&block)
     end
 
     def disabled?(feature, argument = nil)
@@ -67,6 +63,10 @@ module Corral
     end
 
     private
+
+    def gather_features(&block)
+      instance_eval(&block)
+    end
 
     def environment_override(feature, *environments)
       condition = -> do
