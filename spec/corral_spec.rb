@@ -15,11 +15,13 @@ describe Corral do
             before do
               corral("development") do
                 disable :caching, in: :development
+                disable "expiry_headers", in: :development
               end
             end
 
             it "disables the feature" do
               disabled?(:caching).should be_true
+              disabled?(:expiry_headers).should be_true
             end
           end
 

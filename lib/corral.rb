@@ -26,7 +26,7 @@ module Corral
     end
 
     def self.environment=(env)
-      @environment = env
+      @environment = env.to_sym
     end
 
     def corral(env = nil, &block)
@@ -70,7 +70,7 @@ module Corral
 
     def environment_override(feature, *environments)
       condition = -> do
-        environments.any? { |env| env.to_sym == Helpers.environment.to_sym }
+        environments.any? { |env| env.to_sym == Helpers.environment }
       end
 
       Feature.push(feature, condition)
