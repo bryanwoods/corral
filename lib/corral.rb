@@ -20,32 +20,34 @@ module Corral
     end
   end
 
-  def corral(&block)
-    instance_eval(&block)
-  end
-
-  def disabled?(feature, argument = nil)
-    !enabled?(feature, argument)
-  end
-
-  def enabled?(feature, argument = nil)
-    feature = Feature.get(feature)
-    return false unless feature && (condition = feature.condition)
-
-    if argument
-      !condition.call(argument)
-    else
-      !condition.call
-    end
-  end
-
-  def disable(feature, options = {})
-    condition = options[:when] || options[:if]
-
-    if condition && !condition.respond_to?(:call)
-      raise "'when' or 'if' condition must be a callable object"
+  module Helpers
+    def corral(&block)
+      instance_eval(&block)
     end
 
-    Feature.push(feature, condition)
+    def disabled?(feature, argument = nil)
+      !enabled?(feature, argument)
+    end
+
+    def enabled?(feature, argument = nil)
+      feature = Feature.get(feature)
+      return false unless feature && (condition = feature.condition)
+
+      if argument
+        !condition.call(argument)
+      else
+        !condition.call
+      end
+    end
+
+    def disable(feature, options = {})
+      condition = options[:when] || options[:if]
+
+      if condition && !condition.respond_to?(:call)
+        raise "'when' or 'if' condition must be a callable object"
+      end
+
+      Feature.push(feature, condition)
+    end
   end
 end

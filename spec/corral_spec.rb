@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Corral do
-  include Corral
+  include Corral::Helpers
 
   describe "#corral" do
     context "when given a block" do
