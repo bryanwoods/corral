@@ -21,7 +21,20 @@ module Corral
   end
 
   module Helpers
-    def corral(&block)
+    def self.environment
+      @environment
+    end
+
+    def self.environment=(env)
+      @environment = env
+    end
+
+    def corral(env = nil, &block)
+      Helpers.environment = env.to_s
+      features(&block)
+    end
+
+    def features(&block)
       instance_eval(&block)
     end
 
@@ -41,10 +54,23 @@ module Corral
     end
 
     def disable(feature, options = {})
+      environments = options[:in] and
+        return environment_override(feature, *environments)
+
       condition = options[:when] || options[:if]
 
       if condition && !condition.respond_to?(:call)
         raise "'when' or 'if' condition must be a callable object"
+      end
+
+      Feature.push(feature, condition)
+    end
+
+    private
+
+    def environment_override(feature, *environments)
+      condition = -> do
+        environments.any? { |env| env.to_sym == Helpers.environment.to_sym }
       end
 
       Feature.push(feature, condition)
