@@ -22,9 +22,8 @@ module Corral
 
     condition = options[:when] || options[:if]
 
-    if condition && !condition.respond_to?(:call)
+    (condition && !condition.respond_to?(:call)) and
       raise "'when' or 'if' condition must be a callable object"
-    end
 
     Feature.push(feature, condition)
   end
