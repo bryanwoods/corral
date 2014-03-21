@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Corral do
   include Corral::Helpers
 
-  describe "#corral" do
+  describe ".corral" do
     context "when given a block" do
       it "yields the block" do
         corral { :cool_feature }.should == :cool_feature
@@ -15,13 +15,13 @@ describe Corral do
             before do
               corral("development") do
                 disable :caching, in: :development
-                disable "expiry_headers", in: :development
+                enable "expiry_headers", in: :development
               end
             end
 
             it "disables the feature" do
               disabled?(:caching).should be_true
-              disabled?(:expiry_headers).should be_true
+              enabled?("expiry_headers").should be_true
             end
           end
 
@@ -238,6 +238,22 @@ describe Corral do
 
       it "is false" do
         disabled?(:cupcakes, "George").should be_false
+      end
+    end
+  end
+
+  describe "#enable" do
+    context "when the if or when conditions are true" do
+      before do
+        corral do
+          enable :always_on, if: -> { true }
+          enable :everything, when: -> { 1 + 1 == 2 }
+        end
+      end
+
+      it "enables the feature" do
+        enabled?(:always_on).should be_true
+        disabled?(:everything).should be_false
       end
     end
   end

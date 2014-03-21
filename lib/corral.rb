@@ -13,19 +13,15 @@ module Corral
 
   def self.corral(env = nil, &block)
     self.environment = env.to_s
-    gather_features(&block)
+    instance_eval(&block)
   end
 
   def self.disable(feature, options = {})
-    environments = options[:in] and
-      return environment_override(feature, *environments)
+    flip_feature(feature, options.merge(enable: false))
+  end
 
-    condition = options[:when] || options[:if]
-
-    (condition && !condition.respond_to?(:call)) and
-      raise "'when' or 'if' condition must be a callable object"
-
-    Feature.push(feature, condition)
+  def self.enable(feature, options = {})
+    flip_feature(feature, options.merge(enable: true))
   end
 
   def self.disabled?(feature, *arguments)
@@ -36,18 +32,48 @@ module Corral
     (feature = Feature.get(feature)) && (condition = feature.condition) or
       return false
 
-    !condition.call(*arguments)
+    call_condition(feature, condition, *arguments)
   end
 
   private
 
-  def self.gather_features(&block)
-    instance_eval(&block)
-  end
-
-  def self.environment_override(feature, *environments)
+  def self.environment_override(feature, enable, *environments)
     envs = environments.map(&:to_sym)
     condition = -> { envs.any? { |env| env == self.environment } }
-    Feature.push(feature, condition)
+    push_feature(enable, feature, condition)
+  end
+
+  def self.process_condition(options = {})
+    condition = options[:when] || options[:if]
+
+    (condition && !condition.respond_to?(:call)) and
+      raise "'when' or 'if' condition must be a callable object"
+
+    condition
+  end
+
+  def self.flip_feature(feature, options = {})
+    enable = options[:enable]
+    environments = options[:in] and
+      return environment_override(feature, enable, *environments)
+    condition = process_condition(options)
+
+    push_feature(enable, feature, condition)
+  end
+
+  def self.push_feature(enable, feature, condition)
+    if enable
+      Feature.enable(feature, condition)
+    else
+      Feature.disable(feature, condition)
+    end
+  end
+
+  def self.call_condition(feature, condition, *arguments)
+    if feature.disabled
+      !condition.call(*arguments)
+    else
+      condition.call(*arguments)
+    end
   end
 end

@@ -42,7 +42,7 @@ include Corral::Helpers
 
 corral(Rails.env) do
   disable :caching, in: [:development, :test, :staging]
-  disable :crying, when: ->(user) { user.birthday == Date.today }
+  enable :crying, when: ->(user) { user.birthday == Date.today }
 end
 ```
 
