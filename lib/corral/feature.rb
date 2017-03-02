@@ -8,21 +8,30 @@ module Corral
       @disabled = disabled
     end
 
-    def self.push(name, condition, disabled = true)
-      @features ||= {}
-      @features[name] = new(name, condition, disabled)
-    end
+    class << self
+      def features
+        @features ||= {}
+      end
 
-    def self.enable(name, condition)
-      push(name, condition, false)
-    end
+      def push(name, condition, disabled = true)
+        features[name] = new(name, condition, disabled)
+      end
 
-    def self.disable(name, condition)
-      push(name, condition, true)
-    end
+      def enable(name, condition)
+        push(name, condition, false)
+      end
 
-    def self.get(name)
-      (@features ||= {})[name]
+      def disable(name, condition)
+        push(name, condition, true)
+      end
+
+      def get(name)
+        features[name]
+      end
+
+      def all
+        features
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ describe Corral do
   describe ".corral" do
     context "when given a block" do
       it "yields the block" do
-        corral { :cool_feature }.should == :cool_feature
+        expect(corral { :cool_feature }).to eq(:cool_feature)
       end
 
       context "when given known features" do
@@ -20,8 +20,8 @@ describe Corral do
             end
 
             it "disables the feature" do
-              disabled?(:caching).should be_true
-              enabled?("expiry_headers").should be_true
+              expect(disabled?(:caching)).to be true
+              expect(enabled?("expiry_headers")).to be true
             end
           end
 
@@ -33,7 +33,7 @@ describe Corral do
             end
 
             it "does not disable the feature" do
-              disabled?(:debug_mode).should be_false
+              expect(disabled?(:debug_mode)).to be false
             end
           end
         end
@@ -48,8 +48,8 @@ describe Corral do
             end
 
             it "is disabled" do
-              disabled?(:everything_free).should be_true
-              disabled?(:torpedoes).should be_true
+              expect(disabled?(:everything_free)).to be true
+              expect(disabled?(:torpedoes)).to be true
             end
           end
 
@@ -62,8 +62,8 @@ describe Corral do
             end
 
             it "is enabled" do
-              enabled?(:payment_button).should be_true
-              enabled?(:sunshine).should be_true
+              expect(enabled?(:payment_button)).to be true
+              expect(enabled?(:sunshine)).to be true
             end
           end
         end
@@ -81,7 +81,7 @@ describe Corral do
         context "when not given a 'when' or 'if' condition" do
           it "is disabled" do
             corral { :my_feature }
-            disabled?(:my_feature).should be_true
+            expect(disabled?(:my_feature)).to be true
           end
         end
       end
@@ -104,7 +104,7 @@ describe Corral do
         end
 
         it "is false" do
-          enabled?(:torpedoes).should be_false
+          expect(enabled?(:torpedoes)).to be false
         end
       end
 
@@ -117,7 +117,7 @@ describe Corral do
           end
 
           it "is false" do
-            enabled?(:torpedoes).should be_false
+            expect(enabled?(:torpedoes)).to be false
           end
         end
 
@@ -129,7 +129,7 @@ describe Corral do
           end
 
           it "is true" do
-            enabled?(:cupcakes).should be_true
+            expect(enabled?(:cupcakes)).to be true
           end
         end
       end
@@ -137,7 +137,7 @@ describe Corral do
 
     context "when the given feature does not exist" do
       it "is false" do
-        enabled?(:unknown_feature).should be_false
+        expect(enabled?(:unknown_feature)).to be false
       end
     end
 
@@ -150,7 +150,7 @@ describe Corral do
         end
 
         it "is false" do
-          enabled?(:cupcakes, "Bryan").should be_false
+          expect(enabled?(:cupcakes, "Bryan")).to be false
         end
       end
 
@@ -162,7 +162,7 @@ describe Corral do
         end
 
         it "is false" do
-          enabled?(:cupcakes, "George").should be_true
+          expect(enabled?(:cupcakes, "George")).to be true
         end
       end
     end
@@ -178,7 +178,7 @@ describe Corral do
         end
 
         it "is true" do
-          disabled?(:torpedoes).should be_true
+          expect(disabled?(:torpedoes)).to be true
         end
       end
 
@@ -191,7 +191,7 @@ describe Corral do
           end
 
           it "is true" do
-            disabled?(:torpedoes).should be_true
+            expect(disabled?(:torpedoes)).to be true
           end
         end
 
@@ -203,7 +203,7 @@ describe Corral do
           end
 
           it "is false" do
-            disabled?(:cupcakes).should be_false
+            expect(disabled?(:cupcakes)).to be false
           end
         end
       end
@@ -211,7 +211,7 @@ describe Corral do
 
     context "when the given feature does not exist" do
       it "is true" do
-        disabled?(:unknown_feature).should be_true
+        expect(disabled?(:unknown_feature)).to be true
       end
     end
   end
@@ -225,7 +225,7 @@ describe Corral do
       end
 
       it "is true" do
-        disabled?(:cupcakes, "Bryan").should be_true
+        expect(disabled?(:cupcakes, "Bryan")).to be true
       end
     end
 
@@ -237,7 +237,7 @@ describe Corral do
       end
 
       it "is false" do
-        disabled?(:cupcakes, "George").should be_false
+        expect(disabled?(:cupcakes, "George")).to be false
       end
     end
   end
@@ -252,8 +252,8 @@ describe Corral do
       end
 
       it "enables the feature" do
-        enabled?(:always_on).should be_true
-        disabled?(:everything).should be_false
+        expect(enabled?(:always_on)).to be true
+        expect(disabled?(:everything)).to be false
       end
     end
   end
