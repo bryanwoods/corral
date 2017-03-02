@@ -1,6 +1,7 @@
 # Corral
 
 [![Code Climate](https://codeclimate.com/github/bryanwoods/corral.png)](https://codeclimate.com/github/bryanwoods/corral)
+[![Travic CI](https://api.travis-ci.org/bryanwoods/corral.svg?branch=master)](https://travis-ci.org/bryanwoods/corral)
 
 ![Corral](http://cl.ly/image/0Q1E2Z451v2a/corral.jpg)
 
