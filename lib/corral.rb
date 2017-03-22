@@ -45,17 +45,19 @@ module Corral
 
   def self.process_condition(options = {})
     condition = options[:when] || options[:if]
+    default = -> { true }
 
     (condition && !condition.respond_to?(:call)) and
       raise "'when' or 'if' condition must be a callable object"
 
-    condition
+    condition || default
   end
 
   def self.flip_feature(feature, options = {})
     enable = options[:enable]
     environments = options[:in] and
       return environment_override(feature, enable, *environments)
+
     condition = process_condition(options)
 
     push_feature(enable, feature, condition)
