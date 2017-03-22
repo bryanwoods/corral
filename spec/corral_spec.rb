@@ -80,8 +80,13 @@ describe Corral do
 
         context "when not given a 'when' or 'if' condition" do
           it "is disabled" do
-            corral { :my_feature }
+            corral do
+              :my_feature
+              disable :my_other_feature
+            end
+
             expect(disabled?(:my_feature)).to be true
+            expect(disabled?(:my_other_feature)).to be true
           end
         end
       end
@@ -242,18 +247,32 @@ describe Corral do
     end
   end
 
-  describe "#enable" do
-    context "when the if or when conditions are true" do
+  describe ".enable" do
+    context "when not given if or when conditions" do
       before do
         corral do
-          enable :always_on, if: -> { true }
-          enable :everything, when: -> { 1 + 1 == 2 }
+          enable :always_on
         end
       end
 
       it "enables the feature" do
         expect(enabled?(:always_on)).to be true
-        expect(disabled?(:everything)).to be false
+      end
+    end
+
+    context "when given if or when conditions" do
+      context "when the if or when conditions are true" do
+        before do
+          corral do
+            enable :always_on, if: -> { true }
+            enable :everything, when: -> { 1 + 1 == 2 }
+          end
+        end
+
+        it "enables the feature" do
+          expect(enabled?(:always_on)).to be true
+          expect(disabled?(:everything)).to be false
+        end
       end
     end
   end
